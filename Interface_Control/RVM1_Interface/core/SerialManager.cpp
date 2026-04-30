@@ -16,12 +16,26 @@ SerialManager::~SerialManager()
 
 bool SerialManager::openPort(const QString& portName, int baudRate)
 {
+    return openPort(portName, baudRate,
+                    QSerialPort::Data8,
+                    QSerialPort::OneStop,
+                    QSerialPort::NoParity,
+                    QSerialPort::NoFlowControl);
+}
+
+bool SerialManager::openPort(const QString&          portName,
+                              int                     baudRate,
+                              QSerialPort::DataBits   dataBits,
+                              QSerialPort::StopBits   stopBits,
+                              QSerialPort::Parity     parity,
+                              QSerialPort::FlowControl flowControl)
+{
     m_serial->setPortName(portName);
     m_serial->setBaudRate(baudRate);
-    m_serial->setDataBits(QSerialPort::Data8);
-    m_serial->setParity(QSerialPort::NoParity);
-    m_serial->setStopBits(QSerialPort::OneStop);
-    m_serial->setFlowControl(QSerialPort::NoFlowControl);
+    m_serial->setDataBits(dataBits);
+    m_serial->setParity(parity);
+    m_serial->setStopBits(stopBits);
+    m_serial->setFlowControl(flowControl);
 
     if (m_serial->open(QIODevice::ReadWrite)) {
         emit connectionChanged(true);

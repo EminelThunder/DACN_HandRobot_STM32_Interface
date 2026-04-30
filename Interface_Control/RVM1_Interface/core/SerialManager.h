@@ -3,22 +3,27 @@
 #include <QSerialPort>
 #include <QStringList>
 
-// Giao thức nhận qua COM:
-//   "JOINT:q1,q2,q3,q4,q5\n"    — góc khớp (radian)
-//   "POSE:x,y,z,pitch,roll\n"   — vị trí (mm, radian)
-//   "ESTOP\n"                   — dừng khẩn cấp
-
 class SerialManager : public QObject {
     Q_OBJECT
 public:
     explicit SerialManager(QObject* parent = nullptr);
     ~SerialManager();
 
-    bool         openPort(const QString& portName, int baudRate = 115200);
-    void         closePort();
-    bool         isOpen() const;
-    QStringList  availablePorts() const;
-    void         sendStatus(const double angles[5]);
+    // openPort cơ bản (baud only)
+    bool        openPort(const QString& portName, int baudRate = 115200);
+
+    // openPort đầy đủ tham số như QModMaster
+    bool        openPort(const QString&              portName,
+                         int                         baudRate,
+                         QSerialPort::DataBits        dataBits,
+                         QSerialPort::StopBits        stopBits,
+                         QSerialPort::Parity          parity,
+                         QSerialPort::FlowControl     flowControl);
+
+    void        closePort();
+    bool        isOpen() const;
+    QStringList availablePorts() const;
+    void        sendStatus(const double angles[5]);
 
 signals:
     void jointAnglesReceived(double q1, double q2, double q3,

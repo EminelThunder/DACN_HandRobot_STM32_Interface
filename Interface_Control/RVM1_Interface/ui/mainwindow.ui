@@ -32,19 +32,29 @@
        <!-- Nhóm COM port -->
        <item>
         <widget class="QGroupBox" name="groupCOM">
-         <property name="title"><string>Kết nối COM</string></property>
+         <property name="title"><string>Kết nối Serial</string></property>
          <layout class="QGridLayout" name="gridCOM">
-          <property name="spacing"><number>4</number></property>
+          <property name="spacing"><number>5</number></property>
+          <property name="verticalSpacing"><number>6</number></property>
 
+          <!-- Port -->
           <item row="0" column="0">
            <widget class="QLabel" name="lblPort">
-            <property name="text"><string>Port:</string></property>
+            <property name="text"><string>Serial Port:</string></property>
            </widget>
           </item>
-          <item row="0" column="1" colspan="2">
+          <item row="0" column="1">
            <widget class="QComboBox" name="comboPort"/>
           </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="btnRefresh">
+            <property name="text"><string>↺</string></property>
+            <property name="maximumWidth"><number>28</number></property>
+            <property name="toolTip"><string>Làm mới danh sách port</string></property>
+           </widget>
+          </item>
 
+          <!-- Baud -->
           <item row="1" column="0">
            <widget class="QLabel" name="lblBaud">
             <property name="text"><string>Baud:</string></property>
@@ -53,21 +63,79 @@
           <item row="1" column="1" colspan="2">
            <widget class="QComboBox" name="comboBaud">
             <item><property name="text"><string>9600</string></property></item>
+            <item><property name="text"><string>19200</string></property></item>
+            <item><property name="text"><string>38400</string></property></item>
+            <item><property name="text"><string>57600</string></property></item>
             <item><property name="text"><string>115200</string></property></item>
             <item><property name="text"><string>230400</string></property></item>
+            <item><property name="text"><string>460800</string></property></item>
            </widget>
           </item>
 
-          <item row="2" column="0" colspan="2">
-           <widget class="QPushButton" name="btnConnect">
-            <property name="text"><string>Kết nối</string></property>
+          <!-- Data Bits -->
+          <item row="2" column="0">
+           <widget class="QLabel" name="lblDataBits">
+            <property name="text"><string>Data Bits:</string></property>
            </widget>
           </item>
-          <item row="2" column="2">
-           <widget class="QPushButton" name="btnRefresh">
-            <property name="text"><string>↺</string></property>
-            <property name="maximumWidth"><number>32</number></property>
-            <property name="toolTip"><string>Làm mới danh sách port</string></property>
+          <item row="2" column="1" colspan="2">
+           <widget class="QComboBox" name="comboDataBits">
+            <item><property name="text"><string>5</string></property></item>
+            <item><property name="text"><string>6</string></property></item>
+            <item><property name="text"><string>7</string></property></item>
+            <item><property name="text"><string>8</string></property></item>
+           </widget>
+          </item>
+
+          <!-- Stop Bits -->
+          <item row="3" column="0">
+           <widget class="QLabel" name="lblStopBits">
+            <property name="text"><string>Stop Bits:</string></property>
+           </widget>
+          </item>
+          <item row="3" column="1" colspan="2">
+           <widget class="QComboBox" name="comboStopBits">
+            <item><property name="text"><string>1</string></property></item>
+            <item><property name="text"><string>1.5</string></property></item>
+            <item><property name="text"><string>2</string></property></item>
+           </widget>
+          </item>
+
+          <!-- Parity -->
+          <item row="4" column="0">
+           <widget class="QLabel" name="lblParity">
+            <property name="text"><string>Parity:</string></property>
+           </widget>
+          </item>
+          <item row="4" column="1" colspan="2">
+           <widget class="QComboBox" name="comboParity">
+            <item><property name="text"><string>None</string></property></item>
+            <item><property name="text"><string>Even</string></property></item>
+            <item><property name="text"><string>Odd</string></property></item>
+            <item><property name="text"><string>Space</string></property></item>
+            <item><property name="text"><string>Mark</string></property></item>
+           </widget>
+          </item>
+
+          <!-- Flow Control -->
+          <item row="5" column="0">
+           <widget class="QLabel" name="lblFlow">
+            <property name="text"><string>Flow Ctrl:</string></property>
+           </widget>
+          </item>
+          <item row="5" column="1" colspan="2">
+           <widget class="QComboBox" name="comboFlow">
+            <item><property name="text"><string>None</string></property></item>
+            <item><property name="text"><string>RTS/CTS</string></property></item>
+            <item><property name="text"><string>XON/XOFF</string></property></item>
+           </widget>
+          </item>
+
+          <!-- Nút Connect -->
+          <item row="6" column="0" colspan="3">
+           <widget class="QPushButton" name="btnConnect">
+            <property name="text"><string>Kết nối</string></property>
+            <property name="minimumHeight"><number>30</number></property>
            </widget>
           </item>
 

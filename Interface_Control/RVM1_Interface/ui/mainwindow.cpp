@@ -5,6 +5,7 @@
 #include "Kinematics.h"
 
 #include <QWidget>
+#include <QSerialPort>
 #include <Qt3DExtras/Qt3DWindow>
 #include <QtMath>
 
@@ -22,9 +23,19 @@ MainWindow::MainWindow(QWidget *parent)
     container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     ui->viewport3D->layout()->addWidget(container);
 
-    // ── Khởi tạo danh sách port và chọn baud 115200 mặc định ───────────────
+    // ── Khởi tạo danh sách port và chọn giá trị mặc định ────────────────────────────────
     onBtnRefreshClicked();
-    ui->comboBaud->setCurrentIndex(1);   // index 1 = "115200"
+    ui->comboBaud->setCurrentIndex(4);       // 115200
+    ui->comboDataBits->setCurrentIndex(3);   // 8
+    ui->comboStopBits->setCurrentIndex(0);   // 1
+    ui->comboParity->setCurrentIndex(0);     // None
+    ui->comboFlow->setCurrentIndex(0);       // None
+
+    // Màu nút mặc định (chưa kết nối = xanh lá)
+    ui->btnConnect->setStyleSheet(
+        "QPushButton { background-color: #27ae60; color: white; font-weight: bold; border-radius: 4px; }"
+        "QPushButton:hover { background-color: #2ecc71; }"
+        "QPushButton:pressed { background-color: #1e8449; }");
 
     // ── Kết nối nút bấm & slider ────────────────────────────────────────────
     connect(ui->btnConnect,  &QPushButton::clicked, this, &MainWindow::onBtnConnectClicked);
@@ -89,7 +100,36 @@ void MainWindow::onBtnConnectClicked()
     } else {
         QString port = ui->comboPort->currentText();
         int     baud = ui->comboBaud->currentText().toInt();
-        if (!m_serial->openPort(port, baud)) {
+
+        // Data Bits
+        const QSerialPort::DataBits dataBitsMap[] = {
+            QSerialPort::Data5, QSerialPort::Data6,
+            QSerialPort::Data7, QSerialPort::Data8
+        };
+        auto dataBits = dataBitsMap[qBound(0, ui->comboDataBits->currentIndex(), 3)];
+
+        // Stop Bits
+        const QSerialPort::StopBits stopBitsMap[] = {
+            QSerialPort::OneStop, QSerialPort::OneAndHalfStop, QSerialPort::TwoStop
+        };
+        auto stopBits = stopBitsMap[qBound(0, ui->comboStopBits->currentIndex(), 2)];
+
+        // Parity
+        const QSerialPort::Parity parityMap[] = {
+            QSerialPort::NoParity, QSerialPort::EvenParity,
+            QSerialPort::OddParity, QSerialPort::SpaceParity, QSerialPort::MarkParity
+        };
+        auto parity = parityMap[qBound(0, ui->comboParity->currentIndex(), 4)];
+
+        // Flow Control
+        const QSerialPort::FlowControl flowMap[] = {
+            QSerialPort::NoFlowControl,
+            QSerialPort::HardwareControl,
+            QSerialPort::SoftwareControl
+        };
+        auto flow = flowMap[qBound(0, ui->comboFlow->currentIndex(), 2)];
+
+        if (!m_serial->openPort(port, baud, dataBits, stopBits, parity, flow)) {
             ui->labelStatus->setText("✗ Lỗi mở " + port);
             ui->labelStatus->setStyleSheet("color: red; font-weight: bold;");
         }
@@ -159,14 +199,32 @@ void MainWindow::onSliderJ5Changed(int val)
 // ────────────────────────────────────────────────────────────────────────────
 void MainWindow::onConnectionChanged(bool connected)
 {
+    // Enable/disable các combo khi kết nối/ngắt
+    const bool canEdit = !connected;
+    ui->comboPort->setEnabled(canEdit);
+    ui->comboBaud->setEnabled(canEdit);
+    ui->comboDataBits->setEnabled(canEdit);
+    ui->comboStopBits->setEnabled(canEdit);
+    ui->comboParity->setEnabled(canEdit);
+    ui->comboFlow->setEnabled(canEdit);
+    ui->btnRefresh->setEnabled(canEdit);
+
     if (connected) {
         ui->labelStatus->setText("● Đã kết nối: " + ui->comboPort->currentText());
         ui->labelStatus->setStyleSheet("color: #00CC44; font-weight: bold;");
         ui->btnConnect->setText("Ngắt kết nối");
+        ui->btnConnect->setStyleSheet(
+            "QPushButton { background-color: #c0392b; color: white; font-weight: bold; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #e74c3c; }"
+            "QPushButton:pressed { background-color: #922b21; }");
     } else {
         ui->labelStatus->setText("● Chưa kết nối");
         ui->labelStatus->setStyleSheet("color: #FFA500; font-weight: bold;");
         ui->btnConnect->setText("Kết nối");
+        ui->btnConnect->setStyleSheet(
+            "QPushButton { background-color: #27ae60; color: white; font-weight: bold; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #2ecc71; }"
+            "QPushButton:pressed { background-color: #1e8449; }");
     }
 }
 
