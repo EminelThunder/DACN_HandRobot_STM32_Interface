@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>760</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>RV-M1 Robot Interface</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="mainLayout">
+    <property name="leftMargin"><number>6</number></property>
+    <property name="topMargin"><number>6</number></property>
+    <property name="rightMargin"><number>6</number></property>
+    <property name="bottomMargin"><number>6</number></property>
+    <property name="spacing"><number>6</number></property>
+
+    <!-- ======== Panel trái: điều khiển ======== -->
+    <item>
+     <widget class="QWidget" name="leftPanel">
+      <property name="minimumWidth"><number>260</number></property>
+      <property name="maximumWidth"><number>290</number></property>
+      <layout class="QVBoxLayout" name="leftLayout">
+       <property name="spacing"><number>8</number></property>
+
+       <!-- Nhóm COM port -->
+       <item>
+        <widget class="QGroupBox" name="groupCOM">
+         <property name="title"><string>Kết nối COM</string></property>
+         <layout class="QGridLayout" name="gridCOM">
+          <property name="spacing"><number>4</number></property>
+
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblPort">
+            <property name="text"><string>Port:</string></property>
+           </widget>
+          </item>
+          <item row="0" column="1" colspan="2">
+           <widget class="QComboBox" name="comboPort"/>
+          </item>
+
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblBaud">
+            <property name="text"><string>Baud:</string></property>
+           </widget>
+          </item>
+          <item row="1" column="1" colspan="2">
+           <widget class="QComboBox" name="comboBaud">
+            <item><property name="text"><string>9600</string></property></item>
+            <item><property name="text"><string>115200</string></property></item>
+            <item><property name="text"><string>230400</string></property></item>
+           </widget>
+          </item>
+
+          <item row="2" column="0" colspan="2">
+           <widget class="QPushButton" name="btnConnect">
+            <property name="text"><string>Kết nối</string></property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QPushButton" name="btnRefresh">
+            <property name="text"><string>↺</string></property>
+            <property name="maximumWidth"><number>32</number></property>
+            <property name="toolTip"><string>Làm mới danh sách port</string></property>
+           </widget>
+          </item>
+
+         </layout>
+        </widget>
+       </item>
+
+       <!-- Nhóm điều khiển khớp bằng slider -->
+       <item>
+        <widget class="QGroupBox" name="groupJoints">
+         <property name="title"><string>Điều khiển khớp (độ)</string></property>
+         <layout class="QGridLayout" name="gridJoints">
+          <property name="spacing"><number>4</number></property>
+
+          <!-- J1 Eo: ±160° -->
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblJ1Name">
+            <property name="text"><string>J1 Eo:</string></property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSlider" name="sliderJ1">
+            <property name="minimum"><number>-160</number></property>
+            <property name="maximum"><number>160</number></property>
+            <property name="value"><number>0</number></property>
+            <property name="orientation"><enum>Qt::Horizontal</enum></property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="labelJ1">
+            <property name="text"><string>  0°</string></property>
+            <property name="minimumWidth"><number>38</number></property>
+            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+           </widget>
+          </item>
+
+          <!-- J2 Vai: -30° ~ +100° -->
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblJ2Name">
+            <property name="text"><string>J2 Vai:</string></property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSlider" name="sliderJ2">
+            <property name="minimum"><number>-30</number></property>
+            <property name="maximum"><number>100</number></property>
+            <property name="value"><number>35</number></property>
+            <property name="orientation"><enum>Qt::Horizontal</enum></property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="labelJ2">
+            <property name="text"><string> 35°</string></property>
+            <property name="minimumWidth"><number>38</number></property>
+            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+           </widget>
+          </item>
+
+          <!-- J3 Khuỷu: ±120° -->
+          <item row="2" column="0">
+           <widget class="QLabel" name="lblJ3Name">
+            <property name="text"><string>J3 Khuỷu:</string></property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSlider" name="sliderJ3">
+            <property name="minimum"><number>-120</number></property>
+            <property name="maximum"><number>120</number></property>
+            <property name="value"><number>-65</number></property>
+            <property name="orientation"><enum>Qt::Horizontal</enum></property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLabel" name="labelJ3">
+            <property name="text"><string>-65°</string></property>
+            <property name="minimumWidth"><number>38</number></property>
+            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+           </widget>
+          </item>
+
+          <!-- J4 Cổ tay pitch: ±110° -->
+          <item row="3" column="0">
+           <widget class="QLabel" name="lblJ4Name">
+            <property name="text"><string>J4 Pitch:</string></property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSlider" name="sliderJ4">
+            <property name="minimum"><number>-110</number></property>
+            <property name="maximum"><number>110</number></property>
+            <property name="value"><number>0</number></property>
+            <property name="orientation"><enum>Qt::Horizontal</enum></property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLabel" name="labelJ4">
+            <property name="text"><string>  0°</string></property>
+            <property name="minimumWidth"><number>38</number></property>
+            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+           </widget>
+          </item>
+
+          <!-- J5 Cổ tay roll: ±180° -->
+          <item row="4" column="0">
+           <widget class="QLabel" name="lblJ5Name">
+            <property name="text"><string>J5 Roll:</string></property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSlider" name="sliderJ5">
+            <property name="minimum"><number>-180</number></property>
+            <property name="maximum"><number>180</number></property>
+            <property name="value"><number>0</number></property>
+            <property name="orientation"><enum>Qt::Horizontal</enum></property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QLabel" name="labelJ5">
+            <property name="text"><string>  0°</string></property>
+            <property name="minimumWidth"><number>38</number></property>
+            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+           </widget>
+          </item>
+
+         </layout>
+        </widget>
+       </item>
+
+       <!-- Label trạng thái kết nối -->
+       <item>
+        <widget class="QLabel" name="labelStatus">
+         <property name="text"><string>● Chưa kết nối</string></property>
+         <property name="alignment"><set>Qt::AlignCenter</set></property>
+         <property name="styleSheet"><string>color: #FFA500; font-weight: bold;</string></property>
+        </widget>
+       </item>
+
+       <!-- Spacer dưới cùng -->
+       <item>
+        <spacer name="vSpacer">
+         <property name="orientation"><enum>Qt::Vertical</enum></property>
+         <property name="sizeHint" stdset="0">
+          <size><width>20</width><height>40</height></size>
+         </property>
+        </spacer>
+       </item>
+
+      </layout>
+     </widget>
+    </item>
+
+    <!-- ======== Panel phải: viewport Qt3D ======== -->
+    <item>
+     <widget class="QWidget" name="viewport3D">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>1</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QHBoxLayout" name="viewportLayout">
+       <property name="leftMargin"><number>0</number></property>
+       <property name="topMargin"><number>0</number></property>
+       <property name="rightMargin"><number>0</number></property>
+       <property name="bottomMargin"><number>0</number></property>
+      </layout>
+     </widget>
+    </item>
+
+   </layout>
+  </widget>
+
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
+
