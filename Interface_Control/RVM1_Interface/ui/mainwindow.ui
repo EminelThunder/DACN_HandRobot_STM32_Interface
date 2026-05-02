@@ -182,13 +182,13 @@
            <widget class="QSlider" name="sliderJ2">
             <property name="minimum"><number>-30</number></property>
             <property name="maximum"><number>100</number></property>
-            <property name="value"><number>35</number></property>
+            <property name="value"><number>0</number></property>
             <property name="orientation"><enum>Qt::Horizontal</enum></property>
            </widget>
           </item>
           <item row="1" column="2">
            <widget class="QLabel" name="labelJ2">
-            <property name="text"><string> 35°</string></property>
+            <property name="text"><string>  0°</string></property>
             <property name="minimumWidth"><number>38</number></property>
             <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
            </widget>
@@ -204,13 +204,13 @@
            <widget class="QSlider" name="sliderJ3">
             <property name="minimum"><number>-120</number></property>
             <property name="maximum"><number>120</number></property>
-            <property name="value"><number>-65</number></property>
+            <property name="value"><number>0</number></property>
             <property name="orientation"><enum>Qt::Horizontal</enum></property>
            </widget>
           </item>
           <item row="2" column="2">
            <widget class="QLabel" name="labelJ3">
-            <property name="text"><string>-65°</string></property>
+            <property name="text"><string>  0°</string></property>
             <property name="minimumWidth"><number>38</number></property>
             <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
            </widget>
@@ -260,11 +260,21 @@
            </widget>
           </item>
 
+          <!-- Nút Home -->
+          <item row="5" column="0" colspan="3">
+           <widget class="QPushButton" name="btnHome">
+            <property name="minimumSize"><size><width>0</width><height>30</height></size></property>
+            <property name="text"><string>⌂  Về vị trí nghỉ</string></property>
+            <property name="toolTip"><string>Reset tất cả khớp về 0°</string></property>
+            <property name="styleSheet"><string>QPushButton { background-color: #2980b9; color: white; font-weight: bold; border-radius: 4px; }
+QPushButton:hover { background-color: #3498db; }
+QPushButton:pressed { background-color: #1a5276; }</string></property>
+           </widget>
+          </item>
+
          </layout>
         </widget>
        </item>
-
-       <!-- Label trạng thái kết nối -->
        <item>
         <widget class="QLabel" name="labelStatus">
          <property name="text"><string>● Chưa kết nối</string></property>

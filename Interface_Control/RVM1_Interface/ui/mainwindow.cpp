@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
     // ── Kết nối nút bấm & slider ────────────────────────────────────────────
     connect(ui->btnConnect,  &QPushButton::clicked, this, &MainWindow::onBtnConnectClicked);
     connect(ui->btnRefresh,  &QPushButton::clicked, this, &MainWindow::onBtnRefreshClicked);
+    connect(ui->btnHome,     &QPushButton::clicked, this, &MainWindow::onBtnHomeClicked);
 
     connect(ui->sliderJ1, &QSlider::valueChanged, this, &MainWindow::onSliderJ1Changed);
     connect(ui->sliderJ2, &QSlider::valueChanged, this, &MainWindow::onSliderJ2Changed);
@@ -78,10 +79,11 @@ MainWindow::MainWindow(QWidget *parent)
             });
 
     // ── Cập nhật 3D ban đầu ──────────────────────────────────────────────────
-    m_angles[1] = qDegreesToRadians(35.0);
-    m_angles[2] = qDegreesToRadians(-65.0);
-    m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
-                                  m_angles[3], m_angles[4]);
+    // m_angles[1] = qDegreesToRadians(35.0);
+    // m_angles[2] = qDegreesToRadians(-65.0);
+    // m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
+    //                               m_angles[3], m_angles[4]);
+    m_renderer->updateJointAngles(0, 0, 0, 0, 0);
 }
 
 MainWindow::~MainWindow()
@@ -144,6 +146,17 @@ void MainWindow::onBtnRefreshClicked()
     ui->comboPort->clear();
     for (const QString& p : m_serial->availablePorts())
         ui->comboPort->addItem(p);
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Slot: nút Về vị trí nghỉ → reset tất cả khớp về 0°
+// ────────────────────────────────────────────────────────────────────────────
+void MainWindow::onBtnHomeClicked()
+{
+    for (int i = 0; i < 5; ++i) m_angles[i] = 0.0;
+    updateSlidersFromAngles();
+    m_renderer->updateJointAngles(0, 0, 0, 0, 0);
+    sendCurrentAngles();
 }
 
 // ────────────────────────────────────────────────────────────────────────────
