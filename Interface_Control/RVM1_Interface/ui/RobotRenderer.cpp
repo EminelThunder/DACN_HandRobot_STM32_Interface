@@ -54,9 +54,9 @@ static const PartAdjust LINK0[] = {
 
 // --- Link 1: Eo (Waist) - gan vao joint1 ---
 static const PartAdjust LINK1[] = {
-  { "BASE2.STL",  -200.0f, 0.0f, 80.0f,  -90.0f, 0.0f, 0.0f,  QColor(220,  90,  40) },
-  { "BASE2A.STL", -227.5f, 100.0f, -115.0f,  -90.0f, -90.0f, 0.0f,  QColor(200,  80,  30) },
-  { "BASE2B.STL", -227.5f, 167.0f, -115.0f,  -90.0f, -90.0f, 0.0f,  QColor(200,  80,  30) },
+  { "BASE2.STL",  -200.0f, -15.0f, 80.0f,  -90.0f, 0.0f, 0.0f,  QColor(220,  90,  40) },
+  { "BASE2A.STL", -227.5f, 85.0f, -115.0f,  -90.0f, -90.0f, 0.0f,  QColor(200,  80,  30) },
+  { "BASE2B.STL", -227.5f, 152.0f, -115.0f,  -90.0f, -90.0f, 0.0f,  QColor(200,  80,  30) },
 };
 
 // --- Link 2: Vai (Shoulder) - gan vao joint2 ---
@@ -278,7 +278,7 @@ Qt3DCore::QEntity* RobotRenderer::buildScene(const QString& partsDir)
     //   J3 a2=250mm theo X
     //   J4 a3=160mm theo X
     //   J5 a4= 72mm theo X
-    auto* rot1 = makeJoint(root,   {0.0f,   0.152f, 0.0f}, 0);  // J1 Eo: len Y d1=152mm
+    auto* rot1 = makeJoint(root,   {0.0f,   0.148f, 0.0f}, 0);  // J1 Eo: len Y d1=148mm
     addLink(rot1, partsDir, LINK1);
 
     // J2 Vai: offset (0,0,0) so voi J1 — khop vai nam ngay tai J1
@@ -286,7 +286,7 @@ Qt3DCore::QEntity* RobotRenderer::buildScene(const QString& partsDir)
     // J4 Co tay: dich a3=160mm theo X
     // J5 Roll: dich a4=72mm theo X
     // Chi chinh tx/ty/tz trong bang LINK de can mesh, KHONG chinh DH offset nay
-    auto* rot2 = makeJoint(rot1,   {0.0f,   0.167f,   0.0f}, 1);  // J2 Vai: world Y=0.167m
+    auto* rot2 = makeJoint(rot1,   {0.0f,   0.148f,   0.0f}, 1);  // J2 Vai: world Y=0.148m
     addLink(rot2, partsDir, LINK2);
 
     auto* rot3 = makeJoint(rot2,   {0.250f, 0.0f,   0.0f}, 2);  // J3 Khuyu a2=250mm
