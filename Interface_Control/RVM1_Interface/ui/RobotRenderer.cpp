@@ -6,6 +6,7 @@
 #include <Qt3DExtras/QOrbitCameraController>
 #include <Qt3DExtras/QCylinderMesh>
 #include <Qt3DExtras/QConeMesh>
+#include <Qt3DExtras/QSphereMesh>
 #include <Qt3DRender/QMesh>
 #include <Qt3DRender/QCamera>
 #include <Qt3DRender/QPointLight>
@@ -225,9 +226,9 @@ Qt3DCore::QEntity* RobotRenderer::buildScene(const QString& partsDir)
 
     // Camera
     auto* cam = m_view->camera();
-    cam->lens()->setPerspectiveProjection(45.0f, 16.f/9.f, 0.001f, 10.0f);
-    cam->setPosition(QVector3D(0.8f, 0.6f, 0.8f));
-    cam->setViewCenter(QVector3D(0.0f, 0.20f, 0.0f));
+    cam->lens()->setPerspectiveProjection(45.0f, 16.f/9.f, 0.001f, 20.0f);
+    cam->setPosition(QVector3D(1.6f, 1.1f, 1.6f));
+    cam->setViewCenter(QVector3D(0.0f, 0.25f, 0.0f));
     cam->setUpVector(QVector3D(0.0f, 1.0f, 0.0f));
 
     auto* camCtrl = new Qt3DExtras::QOrbitCameraController(root);
