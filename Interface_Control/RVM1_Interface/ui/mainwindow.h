@@ -22,6 +22,7 @@ private slots:
     void onBtnConnectClicked();
     void onBtnRefreshClicked();
     void onBtnHomeClicked();
+    void onBtnApplyIKClicked();
     void onSliderJ1Changed(int val);
     void onSliderJ2Changed(int val);
     void onSliderJ3Changed(int val);

@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnConnect,  &QPushButton::clicked, this, &MainWindow::onBtnConnectClicked);
     connect(ui->btnRefresh,  &QPushButton::clicked, this, &MainWindow::onBtnRefreshClicked);
     connect(ui->btnHome,     &QPushButton::clicked, this, &MainWindow::onBtnHomeClicked);
+    connect(ui->btnApplyIK,  &QPushButton::clicked, this, &MainWindow::onBtnApplyIKClicked);
 
     connect(ui->sliderJ1, &QSlider::valueChanged, this, &MainWindow::onSliderJ1Changed);
     connect(ui->sliderJ2, &QSlider::valueChanged, this, &MainWindow::onSliderJ2Changed);
@@ -157,12 +158,62 @@ void MainWindow::onBtnHomeClicked()
     for (int i = 0; i < 5; ++i) m_angles[i] = 0.0;
     updateSlidersFromAngles();
     m_renderer->updateJointAngles(0, 0, 0, 0, 0);
+    ui->labelIKStatus->clear();
     updateTCPDisplay();
     sendCurrentAngles();
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// Slot: slider thay đổi → cập nhật nhãn + 3D + gửi COM
+// Slot: nút Áp dụng IK → đọc tọa độ từ các ô, chạy động học ngược,
+//        cập nhật slider + 3D + gửi COM
+// ────────────────────────────────────────────────────────────────────────────
+void MainWindow::onBtnApplyIKClicked()
+{
+    // Đọc giá trị từ 5 ô nhập
+    double x     = ui->editTcpX    ->text().toDouble();
+    double y     = ui->editTcpY    ->text().toDouble();
+    double z     = ui->editTcpZ    ->text().toDouble();
+    double pitch = qDegreesToRadians(ui->editTcpPitch->text().toDouble());
+    double roll  = qDegreesToRadians(ui->editTcpRoll ->text().toDouble());
+
+    // Chạy động học ngược
+    double angles[5]{};
+    if (!Kinematics::inverseKinematics(x, y, z, pitch, roll, angles)) {
+        ui->labelIKStatus->setText("Vượt quá giới hạn!");
+        return;
+    }
+
+    // Giới hạn vật lý của từng khớp (rad), khớp với giới hạn slider trong UI
+    //   J1 Eo      : ±160°
+    //   J2 Vai     : -30° ~ +100°
+    //   J3 Khuỷu   : ±120°
+    //   J4 Pitch   : ±110°
+    //   J5 Roll    : ±180°
+    struct Limit { double lo, hi; };
+    static const Limit LIMITS[5] = {
+        { qDegreesToRadians(-160.0), qDegreesToRadians( 160.0) },
+        { qDegreesToRadians( -30.0), qDegreesToRadians( 100.0) },
+        { qDegreesToRadians(-120.0), qDegreesToRadians( 120.0) },
+        { qDegreesToRadians(-110.0), qDegreesToRadians( 110.0) },
+        { qDegreesToRadians(-180.0), qDegreesToRadians( 180.0) },
+    };
+
+    for (int i = 0; i < 5; ++i) {
+        if (angles[i] < LIMITS[i].lo || angles[i] > LIMITS[i].hi) {
+            ui->labelIKStatus->setText("Vượt quá giới hạn!");
+            return;
+        }
+    }
+
+    // Cập nhật góc khớp và giao diện
+    ui->labelIKStatus->setText("");
+    for (int i = 0; i < 5; ++i) m_angles[i] = angles[i];
+    updateSlidersFromAngles();
+    m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
+                                  m_angles[3], m_angles[4]);
+    updateTCPDisplay();
+    sendCurrentAngles();
+}
 // ────────────────────────────────────────────────────────────────────────────
 void MainWindow::onSliderJ1Changed(int val)
 {
@@ -170,6 +221,7 @@ void MainWindow::onSliderJ1Changed(int val)
     m_angles[0] = qDegreesToRadians(double(val));
     m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
                                   m_angles[3], m_angles[4]);
+    ui->labelIKStatus->clear();
     updateTCPDisplay();
     sendCurrentAngles();
 }
@@ -180,6 +232,7 @@ void MainWindow::onSliderJ2Changed(int val)
     m_angles[1] = qDegreesToRadians(double(val));
     m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
                                   m_angles[3], m_angles[4]);
+    ui->labelIKStatus->clear();
     updateTCPDisplay();
     sendCurrentAngles();
 }
@@ -190,6 +243,7 @@ void MainWindow::onSliderJ3Changed(int val)
     m_angles[2] = qDegreesToRadians(double(val));
     m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
                                   m_angles[3], m_angles[4]);
+    ui->labelIKStatus->clear();
     updateTCPDisplay();
     sendCurrentAngles();
 }
@@ -200,6 +254,7 @@ void MainWindow::onSliderJ4Changed(int val)
     m_angles[3] = qDegreesToRadians(double(val));
     m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
                                   m_angles[3], m_angles[4]);
+    ui->labelIKStatus->clear();
     updateTCPDisplay();
     sendCurrentAngles();
 }
@@ -210,6 +265,7 @@ void MainWindow::onSliderJ5Changed(int val)
     m_angles[4] = qDegreesToRadians(double(val));
     m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
                                   m_angles[3], m_angles[4]);
+    ui->labelIKStatus->clear();
     updateTCPDisplay();
     sendCurrentAngles();
 }
