@@ -39,6 +39,7 @@ private:
 
     void updateSlidersFromAngles();
     void sendCurrentAngles();
+    void updateTCPDisplay();   // Tính FK và cập nhật ô tọa độ TCP
 };
 
 #endif // MAINWINDOW_H

@@ -84,6 +84,7 @@ MainWindow::MainWindow(QWidget *parent)
     // m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
     //                               m_angles[3], m_angles[4]);
     m_renderer->updateJointAngles(0, 0, 0, 0, 0);
+    updateTCPDisplay();
 }
 
 MainWindow::~MainWindow()
@@ -156,6 +157,7 @@ void MainWindow::onBtnHomeClicked()
     for (int i = 0; i < 5; ++i) m_angles[i] = 0.0;
     updateSlidersFromAngles();
     m_renderer->updateJointAngles(0, 0, 0, 0, 0);
+    updateTCPDisplay();
     sendCurrentAngles();
 }
 
@@ -168,6 +170,7 @@ void MainWindow::onSliderJ1Changed(int val)
     m_angles[0] = qDegreesToRadians(double(val));
     m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
                                   m_angles[3], m_angles[4]);
+    updateTCPDisplay();
     sendCurrentAngles();
 }
 
@@ -177,6 +180,7 @@ void MainWindow::onSliderJ2Changed(int val)
     m_angles[1] = qDegreesToRadians(double(val));
     m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
                                   m_angles[3], m_angles[4]);
+    updateTCPDisplay();
     sendCurrentAngles();
 }
 
@@ -186,6 +190,7 @@ void MainWindow::onSliderJ3Changed(int val)
     m_angles[2] = qDegreesToRadians(double(val));
     m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
                                   m_angles[3], m_angles[4]);
+    updateTCPDisplay();
     sendCurrentAngles();
 }
 
@@ -195,6 +200,7 @@ void MainWindow::onSliderJ4Changed(int val)
     m_angles[3] = qDegreesToRadians(double(val));
     m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
                                   m_angles[3], m_angles[4]);
+    updateTCPDisplay();
     sendCurrentAngles();
 }
 
@@ -204,6 +210,7 @@ void MainWindow::onSliderJ5Changed(int val)
     m_angles[4] = qDegreesToRadians(double(val));
     m_renderer->updateJointAngles(m_angles[0], m_angles[1], m_angles[2],
                                   m_angles[3], m_angles[4]);
+    updateTCPDisplay();
     sendCurrentAngles();
 }
 
@@ -251,6 +258,7 @@ void MainWindow::onJointAnglesReceived(double q1, double q2, double q3,
     m_angles[3] = q4; m_angles[4] = q5;
     updateSlidersFromAngles();
     m_renderer->updateJointAngles(q1, q2, q3, q4, q5);
+    updateTCPDisplay();
     sendCurrentAngles();
 }
 
@@ -287,5 +295,39 @@ void MainWindow::updateSlidersFromAngles()
 void MainWindow::sendCurrentAngles()
 {
     m_serial->sendStatus(m_angles);
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Private: chạy động học thuận rồi hiển thị tọa độ TCP lên groupTCP
+//
+// Lấy ma trận T_0_5 từ forwardKinematics(), trích:
+//   x, y, z  : cột cuối của ma trận (vị trí TCP, đơn vị mm)
+//   pitch    : góc ngả = atan2(-R[2][0], sqrt(R[0][0]²+R[1][0]²))
+//              (tương đương góc Y trong convention ZYX)
+//   roll     : góc xoay cổ tay = khớp 5 trực tiếp
+// ────────────────────────────────────────────────────────────────────────────
+void MainWindow::updateTCPDisplay()
+{
+    // T_0_5: động học thuận đầy đủ từ đế đến TCP
+    Eigen::Matrix4d T = Kinematics::forwardKinematics(m_angles);
+
+    // Vị trí TCP (cột cuối của ma trận thuần nhất)
+    double x = T(0, 3);
+    double y = T(1, 3);
+    double z = T(2, 3);
+
+    // Góc pitch: tính từ ma trận quay (convention ZYX)
+    double pitch_rad = std::atan2(-T(2, 0),
+                                  std::sqrt(T(0, 0)*T(0, 0) + T(1, 0)*T(1, 0)));
+    double pitch_deg = qRadiansToDegrees(pitch_rad);
+
+    // Roll = khớp 5 trực tiếp
+    double roll_deg  = qRadiansToDegrees(m_angles[4]);
+
+    ui->editTcpX    ->setText(QString::number(x,         'f', 2));
+    ui->editTcpY    ->setText(QString::number(y,         'f', 2));
+    ui->editTcpZ    ->setText(QString::number(z,         'f', 2));
+    ui->editTcpPitch->setText(QString::number(pitch_deg, 'f', 2));
+    ui->editTcpRoll ->setText(QString::number(roll_deg,  'f', 2));
 }
 
