@@ -15,363 +15,595 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="mainLayout">
-    <property name="leftMargin"><number>6</number></property>
-    <property name="topMargin"><number>6</number></property>
-    <property name="rightMargin"><number>6</number></property>
-    <property name="bottomMargin"><number>6</number></property>
-    <property name="spacing"><number>6</number></property>
-
-    <!-- ======== Panel trái: điều khiển ======== -->
+    <property name="spacing">
+     <number>6</number>
+    </property>
+    <property name="leftMargin">
+     <number>6</number>
+    </property>
+    <property name="topMargin">
+     <number>6</number>
+    </property>
+    <property name="rightMargin">
+     <number>6</number>
+    </property>
+    <property name="bottomMargin">
+     <number>6</number>
+    </property>
     <item>
      <widget class="QWidget" name="leftPanel">
       <property name="minimumWidth"><number>260</number></property>
       <property name="maximumWidth"><number>290</number></property>
       <layout class="QVBoxLayout" name="leftLayout">
-       <property name="spacing"><number>8</number></property>
-
-       <!-- Nhóm COM port -->
-       <item>
-        <widget class="QGroupBox" name="groupCOM">
-         <property name="title"><string>Kết nối Serial</string></property>
-         <layout class="QGridLayout" name="gridCOM">
-          <property name="spacing"><number>5</number></property>
-          <property name="verticalSpacing"><number>6</number></property>
-
-          <!-- Port -->
-          <item row="0" column="0">
-           <widget class="QLabel" name="lblPort">
-            <property name="text"><string>Serial Port:</string></property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="comboPort"/>
-          </item>
-          <item row="0" column="2">
-           <widget class="QPushButton" name="btnRefresh">
-            <property name="text"><string>↺</string></property>
-            <property name="maximumWidth"><number>28</number></property>
-            <property name="toolTip"><string>Làm mới danh sách port</string></property>
-           </widget>
-          </item>
-
-          <!-- Baud -->
-          <item row="1" column="0">
-           <widget class="QLabel" name="lblBaud">
-            <property name="text"><string>Baud:</string></property>
-           </widget>
-          </item>
-          <item row="1" column="1" colspan="2">
-           <widget class="QComboBox" name="comboBaud">
-            <item><property name="text"><string>9600</string></property></item>
-            <item><property name="text"><string>19200</string></property></item>
-            <item><property name="text"><string>38400</string></property></item>
-            <item><property name="text"><string>57600</string></property></item>
-            <item><property name="text"><string>115200</string></property></item>
-            <item><property name="text"><string>230400</string></property></item>
-            <item><property name="text"><string>460800</string></property></item>
-           </widget>
-          </item>
-
-          <!-- Data Bits -->
-          <item row="2" column="0">
-           <widget class="QLabel" name="lblDataBits">
-            <property name="text"><string>Data Bits:</string></property>
-           </widget>
-          </item>
-          <item row="2" column="1" colspan="2">
-           <widget class="QComboBox" name="comboDataBits">
-            <item><property name="text"><string>5</string></property></item>
-            <item><property name="text"><string>6</string></property></item>
-            <item><property name="text"><string>7</string></property></item>
-            <item><property name="text"><string>8</string></property></item>
-           </widget>
-          </item>
-
-          <!-- Stop Bits -->
-          <item row="3" column="0">
-           <widget class="QLabel" name="lblStopBits">
-            <property name="text"><string>Stop Bits:</string></property>
-           </widget>
-          </item>
-          <item row="3" column="1" colspan="2">
-           <widget class="QComboBox" name="comboStopBits">
-            <item><property name="text"><string>1</string></property></item>
-            <item><property name="text"><string>1.5</string></property></item>
-            <item><property name="text"><string>2</string></property></item>
-           </widget>
-          </item>
-
-          <!-- Parity -->
-          <item row="4" column="0">
-           <widget class="QLabel" name="lblParity">
-            <property name="text"><string>Parity:</string></property>
-           </widget>
-          </item>
-          <item row="4" column="1" colspan="2">
-           <widget class="QComboBox" name="comboParity">
-            <item><property name="text"><string>None</string></property></item>
-            <item><property name="text"><string>Even</string></property></item>
-            <item><property name="text"><string>Odd</string></property></item>
-            <item><property name="text"><string>Space</string></property></item>
-            <item><property name="text"><string>Mark</string></property></item>
-           </widget>
-          </item>
-
-          <!-- Flow Control -->
-          <item row="5" column="0">
-           <widget class="QLabel" name="lblFlow">
-            <property name="text"><string>Flow Ctrl:</string></property>
-           </widget>
-          </item>
-          <item row="5" column="1" colspan="2">
-           <widget class="QComboBox" name="comboFlow">
-            <item><property name="text"><string>None</string></property></item>
-            <item><property name="text"><string>RTS/CTS</string></property></item>
-            <item><property name="text"><string>XON/XOFF</string></property></item>
-           </widget>
-          </item>
-
-          <!-- Nút Connect -->
-          <item row="6" column="0" colspan="3">
-           <widget class="QPushButton" name="btnConnect">
-            <property name="text"><string>Kết nối</string></property>
-            <property name="minimumHeight"><number>30</number></property>
-           </widget>
-          </item>
-
-         </layout>
-        </widget>
-       </item>
-
-       <!-- Nhóm điều khiển khớp bằng slider -->
-       <item>
-        <widget class="QGroupBox" name="groupJoints">
-         <property name="title"><string>Điều khiển khớp (độ)</string></property>
-         <layout class="QGridLayout" name="gridJoints">
-          <property name="spacing"><number>4</number></property>
-
-          <!-- J1 Eo: ±160° -->
-          <item row="0" column="0">
-           <widget class="QLabel" name="lblJ1Name">
-            <property name="text"><string>J1 Eo:</string></property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSlider" name="sliderJ1">
-            <property name="minimum"><number>-160</number></property>
-            <property name="maximum"><number>160</number></property>
-            <property name="value"><number>0</number></property>
-            <property name="orientation"><enum>Qt::Horizontal</enum></property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QLabel" name="labelJ1">
-            <property name="text"><string>  0°</string></property>
-            <property name="minimumWidth"><number>38</number></property>
-            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
-           </widget>
-          </item>
-
-          <!-- J2 Vai: -30° ~ +100° -->
-          <item row="1" column="0">
-           <widget class="QLabel" name="lblJ2Name">
-            <property name="text"><string>J2 Vai:</string></property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSlider" name="sliderJ2">
-            <property name="minimum"><number>-30</number></property>
-            <property name="maximum"><number>100</number></property>
-            <property name="value"><number>0</number></property>
-            <property name="orientation"><enum>Qt::Horizontal</enum></property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLabel" name="labelJ2">
-            <property name="text"><string>  0°</string></property>
-            <property name="minimumWidth"><number>38</number></property>
-            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
-           </widget>
-          </item>
-
-          <!-- J3 Khuỷu: ±120° -->
-          <item row="2" column="0">
-           <widget class="QLabel" name="lblJ3Name">
-            <property name="text"><string>J3 Khuỷu:</string></property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QSlider" name="sliderJ3">
-            <property name="minimum"><number>-120</number></property>
-            <property name="maximum"><number>120</number></property>
-            <property name="value"><number>0</number></property>
-            <property name="orientation"><enum>Qt::Horizontal</enum></property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QLabel" name="labelJ3">
-            <property name="text"><string>  0°</string></property>
-            <property name="minimumWidth"><number>38</number></property>
-            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
-           </widget>
-          </item>
-
-          <!-- J4 Cổ tay pitch: ±110° -->
-          <item row="3" column="0">
-           <widget class="QLabel" name="lblJ4Name">
-            <property name="text"><string>J4 Pitch:</string></property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QSlider" name="sliderJ4">
-            <property name="minimum"><number>-110</number></property>
-            <property name="maximum"><number>110</number></property>
-            <property name="value"><number>0</number></property>
-            <property name="orientation"><enum>Qt::Horizontal</enum></property>
-           </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QLabel" name="labelJ4">
-            <property name="text"><string>  0°</string></property>
-            <property name="minimumWidth"><number>38</number></property>
-            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
-           </widget>
-          </item>
-
-          <!-- J5 Cổ tay roll: ±180° -->
-          <item row="4" column="0">
-           <widget class="QLabel" name="lblJ5Name">
-            <property name="text"><string>J5 Roll:</string></property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QSlider" name="sliderJ5">
-            <property name="minimum"><number>-180</number></property>
-            <property name="maximum"><number>180</number></property>
-            <property name="value"><number>0</number></property>
-            <property name="orientation"><enum>Qt::Horizontal</enum></property>
-           </widget>
-          </item>
-          <item row="4" column="2">
-           <widget class="QLabel" name="labelJ5">
-            <property name="text"><string>  0°</string></property>
-            <property name="minimumWidth"><number>38</number></property>
-            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
-           </widget>
-          </item>
-
-          <!-- Nút Home -->
-          <item row="5" column="0" colspan="3">
-           <widget class="QPushButton" name="btnHome">
-            <property name="minimumSize"><size><width>0</width><height>30</height></size></property>
-            <property name="text"><string>⌂  Về vị trí nghỉ</string></property>
-            <property name="toolTip"><string>Reset tất cả khớp về 0°</string></property>
-            <property name="styleSheet"><string>QPushButton { background-color: #2980b9; color: white; font-weight: bold; border-radius: 4px; }
-QPushButton:hover { background-color: #3498db; }
-QPushButton:pressed { background-color: #1a5276; }</string></property>
-           </widget>
-          </item>
-
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelStatus">
-         <property name="text"><string>● Chưa kết nối</string></property>
-         <property name="alignment"><set>Qt::AlignCenter</set></property>
-         <property name="styleSheet"><string>color: #FFA500; font-weight: bold;</string></property>
-        </widget>
-       </item>
-
-       <!-- Nhóm hiển thị tọa độ TCP (kết quả động học thuận) -->
-       <item>
-        <widget class="QGroupBox" name="groupTCP">
-         <property name="title"><string>Tọa độ điểm cuối (FK)</string></property>
-         <layout class="QGridLayout" name="gridTCP">
-          <property name="spacing"><number>4</number></property>
-
-          <item row="0" column="0">
-           <widget class="QLabel"><property name="text"><string>X (mm):</string></property></widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="editTcpX">
-            <property name="readOnly"><bool>true</bool></property>
-            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
-            <property name="text"><string>0.00</string></property>
-           </widget>
-          </item>
-
-          <item row="1" column="0">
-           <widget class="QLabel"><property name="text"><string>Y (mm):</string></property></widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="editTcpY">
-            <property name="readOnly"><bool>true</bool></property>
-            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
-            <property name="text"><string>0.00</string></property>
-           </widget>
-          </item>
-
-          <item row="2" column="0">
-           <widget class="QLabel"><property name="text"><string>Z (mm):</string></property></widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="editTcpZ">
-            <property name="readOnly"><bool>true</bool></property>
-            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
-            <property name="text"><string>0.00</string></property>
-           </widget>
-          </item>
-
-          <item row="3" column="0">
-           <widget class="QLabel"><property name="text"><string>Pitch (°):</string></property></widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="editTcpPitch">
-            <property name="readOnly"><bool>true</bool></property>
-            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
-            <property name="text"><string>0.00</string></property>
-           </widget>
-          </item>
-
-          <item row="4" column="0">
-           <widget class="QLabel"><property name="text"><string>Roll (°):</string></property></widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QLineEdit" name="editTcpRoll">
-            <property name="readOnly"><bool>true</bool></property>
-            <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
-            <property name="text"><string>0.00</string></property>
-           </widget>
-          </item>
-
-         </layout>
-        </widget>
-       </item>
-
-       <!-- Spacer dưới cùng -->
-       <item>
-        <spacer name="vSpacer">
-         <property name="orientation"><enum>Qt::Vertical</enum></property>
-         <property name="sizeHint" stdset="0">
-          <size><width>20</width><height>40</height></size>
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <item>
+       <widget class="QGroupBox" name="groupCOM">
+        <property name="title">
+         <string>Kết nối Serial</string>
+        </property>
+        <layout class="QGridLayout" name="gridCOM">
+         <property name="horizontalSpacing">
+          <number>5</number>
          </property>
-        </spacer>
-       </item>
-
+         <property name="verticalSpacing">
+          <number>6</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="lblPort">
+           <property name="text">
+            <string>Serial Port:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="comboPort"/>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="btnRefresh">
+           <property name="toolTip">
+            <string>Làm mới danh sách port</string>
+           </property>
+           <property name="text">
+            <string>↺</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="lblBaud">
+           <property name="text">
+            <string>Baud:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" colspan="2">
+          <widget class="QComboBox" name="comboBaud">
+           <item>
+            <property name="text">
+             <string>9600</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>19200</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>38400</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>57600</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>115200</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>230400</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>460800</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="lblDataBits">
+           <property name="text">
+            <string>Data Bits:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1" colspan="2">
+          <widget class="QComboBox" name="comboDataBits">
+           <item>
+            <property name="text">
+             <string>5</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>6</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>7</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>8</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="lblStopBits">
+           <property name="text">
+            <string>Stop Bits:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1" colspan="2">
+          <widget class="QComboBox" name="comboStopBits">
+           <item>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1.5</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="lblParity">
+           <property name="text">
+            <string>Parity:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1" colspan="2">
+          <widget class="QComboBox" name="comboParity">
+           <item>
+            <property name="text">
+             <string>None</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Even</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Odd</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Space</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Mark</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="lblFlow">
+           <property name="text">
+            <string>Flow Ctrl:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1" colspan="2">
+          <widget class="QComboBox" name="comboFlow">
+           <item>
+            <property name="text">
+             <string>None</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>RTS/CTS</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>XON/XOFF</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="6" column="0" colspan="3">
+          <widget class="QPushButton" name="btnConnect">
+           <property name="minimumSize">
+            <size><width>0</width><height>30</height></size>
+           </property>
+           <property name="text">
+            <string>Kết nối</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelStatus">
+        <property name="styleSheet">
+         <string>color: #FFA500; font-weight: bold;</string>
+        </property>
+        <property name="text">
+         <string>● Chưa kết nối</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupJoints">
+        <property name="title">
+         <string>Điều khiển khớp (độ)</string>
+        </property>
+        <layout class="QGridLayout" name="gridJoints">
+         <property name="spacing">
+          <number>4</number>
+         </property>
+         <item row="2" column="0">
+          <widget class="QLabel" name="lblJ2Name">
+           <property name="text">
+            <string>J2 Vai:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="lblJ4Name">
+           <property name="text">
+            <string>J4 Pitch:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="QLabel" name="labelJ4">
+           <property name="minimumWidth"><number>35</number></property>
+           <property name="text">
+            <string>  0°</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QSlider" name="sliderJ1">
+           <property name="minimum">
+            <number>-160</number>
+           </property>
+           <property name="maximum">
+            <number>160</number>
+           </property>
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="lblJ1Name">
+           <property name="text">
+            <string>J1 Eo:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="2">
+          <widget class="QLabel" name="labelJ5">
+           <property name="minimumWidth"><number>35</number></property>
+           <property name="text">
+            <string>  0°</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QLabel" name="labelJ2">
+           <property name="minimumWidth"><number>35</number></property>
+           <property name="text">
+            <string>  0°</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0" colspan="3">
+          <widget class="QPushButton" name="btnHome">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Reset tất cả khớp về 0°</string>
+           </property>
+           <property name="styleSheet">
+            <string>QPushButton { background-color: #2980b9; color: white; font-weight: bold; border-radius: 4px; }
+QPushButton:hover { background-color: #3498db; }
+QPushButton:pressed { background-color: #1a5276; }</string>
+           </property>
+           <property name="text">
+            <string>⌂  Về vị trí nghỉ</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="lblJ3Name">
+           <property name="text">
+            <string>J3 Khuỷu:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="lblJ5Name">
+           <property name="text">
+            <string>J5 Roll:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QSlider" name="sliderJ4">
+           <property name="minimum">
+            <number>-110</number>
+           </property>
+           <property name="maximum">
+            <number>110</number>
+           </property>
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QSlider" name="sliderJ3">
+           <property name="minimum">
+            <number>-120</number>
+           </property>
+           <property name="maximum">
+            <number>120</number>
+           </property>
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QSlider" name="sliderJ2">
+           <property name="minimum">
+            <number>-30</number>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="labelJ1">
+           <property name="minimumWidth"><number>35</number></property>
+           <property name="text">
+            <string>  0°</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QSlider" name="sliderJ5">
+           <property name="minimum">
+            <number>-180</number>
+           </property>
+           <property name="maximum">
+            <number>180</number>
+           </property>
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QLabel" name="labelJ3">
+           <property name="minimumWidth"><number>35</number></property>
+           <property name="text">
+            <string>  0°</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupTCP">
+        <property name="title">
+         <string>Tọa độ điểm cuối</string>
+        </property>
+        <layout class="QGridLayout" name="gridTCP">
+         <property name="spacing">
+          <number>4</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>X (mm):</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="editTcpX">
+           <property name="text">
+            <string>0.00</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Y (mm):</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="editTcpY">
+           <property name="text">
+            <string>0.00</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Z (mm):</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="editTcpZ">
+           <property name="text">
+            <string>0.00</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Pitch (°):</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="editTcpPitch">
+           <property name="text">
+            <string>0.00</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Roll (°):</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="editTcpRoll">
+           <property name="text">
+            <string>0.00</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0" colspan="2">
+          <widget class="QPushButton" name="btnApplyIK">
+           <property name="minimumSize">
+            <size><width>0</width><height>30</height></size>
+           </property>
+           <property name="text">
+            <string>⟳  Áp dụng IK</string>
+           </property>
+           <property name="toolTip">
+            <string>Tính động học ngược từ tọa độ điền vào</string>
+           </property>
+           <property name="styleSheet">
+            <string>QPushButton { background-color: #7d3c98; color: white; font-weight: bold; border-radius: 4px; }
+QPushButton:hover { background-color: #9b59b6; }
+QPushButton:pressed { background-color: #5b2c6f; }</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelIKStatus">
+        <property name="text"><string></string></property>
+        <property name="alignment"><set>Qt::AlignmentFlag::AlignCenter</set></property>
+        <property name="styleSheet"><string>color: red; font-weight: bold;</string></property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="vSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       </layout>
      </widget>
     </item>
-
-    <!-- ======== Panel phải: viewport Qt3D ======== -->
     <item>
      <widget class="QWidget" name="viewport3D">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
       <layout class="QHBoxLayout" name="viewportLayout">
        <property name="leftMargin"><number>0</number></property>
        <property name="topMargin"><number>0</number></property>
@@ -380,10 +612,8 @@ QPushButton:pressed { background-color: #1a5276; }</string></property>
       </layout>
      </widget>
     </item>
-
    </layout>
   </widget>
-
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -395,9 +625,7 @@ QPushButton:pressed { background-color: #1a5276; }</string></property>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-
  </widget>
  <resources/>
  <connections/>
 </ui>
-
