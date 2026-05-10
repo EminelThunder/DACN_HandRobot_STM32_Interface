@@ -227,7 +227,7 @@ Qt3DCore::QEntity* RobotRenderer::buildScene(const QString& partsDir)
     // Camera
     auto* cam = m_view->camera();
     cam->lens()->setPerspectiveProjection(45.0f, 16.f/9.f, 0.001f, 20.0f);
-    cam->setPosition(QVector3D(1.6f, 1.1f, 1.6f));
+    cam->setPosition(QVector3D(1.0f, 0.7f, 1.0f));
     cam->setViewCenter(QVector3D(0.0f, 0.25f, 0.0f));
     cam->setUpVector(QVector3D(0.0f, 1.0f, 0.0f));
 
