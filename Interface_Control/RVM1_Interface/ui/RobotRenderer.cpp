@@ -297,7 +297,38 @@ Qt3DCore::QEntity* RobotRenderer::buildScene(const QString& partsDir)
 
     // Joint 5 (co tay roll) - hien chua co part rieng
     auto* rot5 = makeJoint(rot4,   {0.072f, 0.0f,   0.0f}, 4);
-    (void)rot5; // se them part sau khi co file
+
+    // -------------------------------------------------------
+    // TCP Marker — diem cuoi cua robot (Tool Center Point)
+    //
+    // Theo thong so DH: a5 = 107 mm, tuc la TCP cach khop 5
+    // them 107 mm doc theo truc X cuc bo cua khop 5.
+    // Khi cac khop quay, marker nay tu dong di chuyen theo
+    // vi no la con cua rot5 trong cay phan cap scene.
+    //
+    // Bieu dien bang hinh cau do nho (ban kinh 12 mm).
+    // -------------------------------------------------------
+    auto* tcpEnt = new Qt3DCore::QEntity(rot5);
+
+    // Hinh cau
+    auto* tcpSphere = new Qt3DExtras::QSphereMesh(tcpEnt);
+    tcpSphere->setRadius(0.003f);   // ban kinh 3 mm
+    tcpSphere->setRings(20);
+    tcpSphere->setSlices(20);
+    tcpEnt->addComponent(tcpSphere);
+
+    // Mau do tuoi, phat sang de de nhan ra
+    auto* tcpMat = new Qt3DExtras::QPhongMaterial(tcpEnt);
+    tcpMat->setDiffuse(QColor(255, 50,  50));
+    tcpMat->setAmbient(QColor(200, 10,  10));
+    tcpMat->setSpecular(QColor(255, 255, 255));
+    tcpMat->setShininess(120.0f);
+    tcpEnt->addComponent(tcpMat);
+
+    // Dich chuyen 107 mm doc theo truc X (a5 = 107 mm)
+    auto* tcpT = new Qt3DCore::QTransform(tcpEnt);
+    tcpT->setTranslation(QVector3D(0.107f, 0.0f, 0.0f));
+    tcpEnt->addComponent(tcpT);
 
     return root;
 }
