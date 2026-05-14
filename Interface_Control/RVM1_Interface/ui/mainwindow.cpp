@@ -372,8 +372,10 @@ void MainWindow::updateTCPDisplay()
     double y = T(1, 3);
     double z = T(2, 3);
 
-    // Góc pitch: tính từ ma trận quay (convention ZYX)
-    double pitch_rad = std::atan2(-T(2, 0),
+    // Góc pitch: góc nâng cánh tay so với nằm ngang (dương = hướng lên)
+    // T(2,0) = z-component của trục x đầu cuối. Khi cánh tay ngẩng lên, T(2,0) > 0 → pitch > 0
+    // Nhất quán với IK: zr = (z - D1) - L4*sin(pitch)
+    double pitch_rad = std::atan2(T(2, 0),
                                   std::sqrt(T(0, 0)*T(0, 0) + T(1, 0)*T(1, 0)));
     double pitch_deg = qRadiansToDegrees(pitch_rad);
 

@@ -104,6 +104,8 @@ bool Kinematics::inverseKinematics(double x, double y, double z,
     const double L2 = 250.0; // Cánh tay trên (shoulder → elbow)
     const double L3 = 160.0; // Cánh tay dưới (elbow → wrist center)
     const double L4 = 179.0; // Cổ tay + TCP   (wrist center → TCP) = 72 + 107
+    const double D1 = 152.0; // Chiều cao khớp 1 so với đế (d1 trong bảng DH)
+                              // Phải trừ đi để chuyển z từ hệ đế sang hệ khớp 2
 
     // --------------------------------------------------------
     // Bước 1: Khớp 1 (Waist) — xoay eo quanh trục Z thẳng đứng
@@ -130,7 +132,9 @@ bool Kinematics::inverseKinematics(double x, double y, double z,
     // --------------------------------------------------------
     double r_xy = std::sqrt(x*x + y*y); // Bán kính ngang của TCP
     double xr   = r_xy - L4 * std::cos(pitch); // Tọa độ ngang của tâm cổ tay
-    double zr   = z    - L4 * std::sin(pitch); // Tọa độ đứng  của tâm cổ tay
+    // Trừ D1 để chuyển z từ hệ tọa độ đế (FK output) sang hệ khớp 2 (shoulder).
+    // FK luôn cộng d1=152mm vào z, nên IK phải trừ lại để giải đúng.
+    double zr   = (z - D1) - L4 * std::sin(pitch); // Tọa độ đứng tâm cổ tay so với khớp 2
 
     // --------------------------------------------------------
     // Bước 3: Khớp 3 (Elbow) — dùng định lý cosin
