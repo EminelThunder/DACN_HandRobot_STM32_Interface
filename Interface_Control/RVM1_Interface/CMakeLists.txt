@@ -4,17 +4,53 @@ project(RVM1_Interface LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# vcpkg toolchain (eigen3, assimp)
-# Nếu chưa set, truyền khi configure:
-#   -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
-if(EXISTS "C:/vcpkg/scripts/buildsystems/vcpkg.cmake" AND
-   NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-    set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake")
+# vcpkg toolchain (eigen3)
+# Tự tìm vcpkg trong các vị trí phổ biến; override bằng -DCMAKE_TOOLCHAIN_FILE=...
+if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    foreach(_VCPKG_ROOT
+            "C:/vcpkg"
+            "D:/vcpkg"
+            "$ENV{USERPROFILE}/vcpkg"
+            "$ENV{LOCALAPPDATA}/vcpkg")
+        if(EXISTS "${_VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+            set(CMAKE_TOOLCHAIN_FILE "${_VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+            message(STATUS "Auto-detected vcpkg at: ${_VCPKG_ROOT}")
+            break()
+        endif()
+    endforeach()
 endif()
 
-# Đường dẫn Qt 6 (MinGW 64-bit)
+# Đường dẫn Qt 6 — tự tìm trong các ổ đĩa/phiên bản phổ biến
+# Có thể override bằng: -DCMAKE_PREFIX_PATH=C:/Qt/6.x.x/mingw_64
 if(NOT DEFINED CMAKE_PREFIX_PATH)
-    set(CMAKE_PREFIX_PATH "C:/Qt/6.11.0/mingw_64")
+    set(_QT_ARCHS "mingw_64" "mingw64")
+    set(_QT_SEARCH_ROOTS "C:/Qt" "D:/Qt" "E:/Qt" "$ENV{USERPROFILE}/Qt")
+    foreach(_ROOT ${_QT_SEARCH_ROOTS})
+        if(EXISTS "${_ROOT}")
+            file(GLOB _QT_VERSIONS "${_ROOT}/6.*")
+            # Sắp xếp giảm dần để ưu tiên phiên bản mới nhất
+            list(SORT _QT_VERSIONS ORDER DESCENDING)
+            foreach(_VER ${_QT_VERSIONS})
+                foreach(_ARCH ${_QT_ARCHS})
+                    if(EXISTS "${_VER}/${_ARCH}/lib/cmake/Qt6")
+                        set(CMAKE_PREFIX_PATH "${_VER}/${_ARCH}")
+                        message(STATUS "Auto-detected Qt6 at: ${CMAKE_PREFIX_PATH}")
+                        break()
+                    endif()
+                endforeach()
+                if(DEFINED CMAKE_PREFIX_PATH)
+                    break()
+                endif()
+            endforeach()
+        endif()
+        if(DEFINED CMAKE_PREFIX_PATH)
+            break()
+        endif()
+    endforeach()
+    if(NOT DEFINED CMAKE_PREFIX_PATH)
+        message(WARNING "Qt6 không tìm thấy tự động. Truyền thủ công:\n"
+                        "  cmake -DCMAKE_PREFIX_PATH=C:/Qt/6.x.x/mingw_64 ..")
+    endif()
 endif()
 
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets SerialPort 3DCore 3DRender 3DExtras)
